@@ -1,7 +1,8 @@
 const restify = require('restify');
 const builder = require('botbuilder');
 
-const {helloName} = require('./dialogs/dialogs');
+const {helloName, askLocation} = require('./dialogs/dialogs');
+const {getWeather} = require('./weather-api/weather-api');
 
 // Setup Restify Server
 const app = restify.createServer();
@@ -29,5 +30,28 @@ bot.dialog('/', (session, args) => {
     } else {
         session.userData = null;
     }
-    session.endDialog();
+    // session.endDialog();
 });
+
+bot.dialog('weather', [
+    function(session) {
+        session.beginDialog('askLocation');
+    },
+    function(session, results) {
+        session.dialogData.location = results.response;
+        session.send(getWeather(session.dialogData.location));
+        session.endDialog();
+    }
+])
+    .triggerAction({
+        matches: /^weather$/i
+});
+
+bot.dialog('askLocation', [
+    function(session) {
+        builder.Prompts.text('Please, give me your location');
+    },
+    function(session, results) {
+        session.endDialogWithResult(results);
+    }
+]);
