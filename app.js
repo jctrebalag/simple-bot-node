@@ -1,7 +1,7 @@
 const restify = require('restify');
 const builder = require('botbuilder');
 
-const {helloName, askLocation, weather} = require('./dialogs/dialogs');
+const {helloName, weather} = require('./dialogs/dialogs');
 
 // Setup Restify Server
 const app = restify.createServer();
@@ -37,4 +37,3 @@ bot.dialog('weather', weather)
         matches: /^weather$/i
 });
 
-bot.dialog('askLocation', askLocation);

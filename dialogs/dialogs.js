@@ -8,27 +8,36 @@ var helloName = (session) => {
 };
 
 var weather = [
-    function(session) {
-        session.beginDialog('askLocation');
+    (session, args) => {
+        if (args && args.reprompt) {
+            builder.Prompts.text(session, 'Unable to retrieve data, please, give me your location again');
+        } else {
+            builder.Prompts.text(session, 'Please, give me your location');
+        }
     },
     async (session, results) => {
         try {
             session.dialogData.location = results.response;
             let weatherStatus = await getWeather(session.dialogData.location);
+            console.log(weatherStatus);
             session.endDialog(weatherStatus);
         } catch(e) {
-            console.log(e);
+                if (e.code === 'ENOTFOUND') {
+                    console.log('Unable to connect to API.');
+                } else {
+                    console.log(e.message);
+                }
+            session.replaceDialog('weather', {reprompt: true});
         }
     }
 ];
 
-var askLocation = [
-    (session) => {
-        builder.Prompts.text(session, 'Please, give me your location');
-    },
-    (session, results) => {
-        session.endDialogWithResult(results);
-    }
-];
+// var askLocation = [
+//     (session) => {
+//     },
+//     (session, results) => {
+//         session.endDialogWithResult(results);
+//     }
+// ];
 
-module.exports = {helloName, weather, askLocation};
+module.exports = {helloName, weather};
