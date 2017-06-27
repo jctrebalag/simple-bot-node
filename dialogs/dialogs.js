@@ -1,11 +1,19 @@
 const builder = require('botbuilder');
 const {getWeather} = require('./../weather-api/weather-api');
 
-var helloName = (session) => {
-    let name = session.message.text;
-    session.userData.name = name;
-    session.send(`Hello ${name}. What can I do for you ?`);
-};
+var hello = [
+    (session, args, next) => {
+        if (!session.userData.name) {
+            builder.Prompts.text(session, 'Hi! What is your name?');
+        } else {
+            next();
+        }
+    },
+    (session, results) => {
+        session.userData.name = results.response || session.userData.name;
+        session.endDialog(`Hello ${session.userData.name}. What can I do for you ?`);
+    }
+];
 
 var weather = [
     (session, args) => {
@@ -19,7 +27,6 @@ var weather = [
         try {
             session.dialogData.location = results.response;
             let weatherStatus = await getWeather(session.dialogData.location);
-            console.log(weatherStatus);
             session.endDialog(weatherStatus);
         } catch(e) {
                 if (e.code === 'ENOTFOUND') {
@@ -32,12 +39,5 @@ var weather = [
     }
 ];
 
-// var askLocation = [
-//     (session) => {
-//     },
-//     (session, results) => {
-//         session.endDialogWithResult(results);
-//     }
-// ];
 
-module.exports = {helloName, weather};
+module.exports = {hello, weather};

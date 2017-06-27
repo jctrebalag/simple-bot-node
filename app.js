@@ -1,7 +1,7 @@
 const restify = require('restify');
 const builder = require('botbuilder');
 
-const {helloName, weather} = require('./dialogs/dialogs');
+const {hello, weather} = require('./dialogs/dialogs');
 
 // Setup Restify Server
 const app = restify.createServer();
@@ -20,17 +20,7 @@ app.post('/api/messages', connector.listen());
 
 var bot = new builder.UniversalBot(connector);
 
-bot.dialog('/', (session, args) => {
-    if (!session.userData.greeting) {
-        session.send('Hello. What is your name ?');
-        session.userData.greeting = true;
-    } else if (!session.userData.name) {
-        helloName(session);
-    } else {
-        session.userData = null;
-    }
-    session.endDialog();
-});
+bot.dialog('/', hello);
 
 bot.dialog('weather', weather)
     .triggerAction({
