@@ -1,5 +1,8 @@
 const builder = require('botbuilder');
+
 const {getWeather} = require('./../weather-api/weather-api');
+const {feeds} = require('./../newsreader/feeds');
+const {newsReader} = require('./../newsreader/newsreader');
 
 var hello = [
     (session, args, next) => {
@@ -39,5 +42,41 @@ var weather = [
     }
 ];
 
+var getRssFeeds = [
+    (session, args) => {
+        if (args && args.reprompt) {
+            session.send(session, 'Unable to retrieve data.');
+        }
+        let options = {listStyle: builder.ListStyle.button};
+        builder.Prompts.choice(session, "Topics:", feeds.categories, options);
+    },
+    async (session, results) => {
+        try {
+            let feedCategory = feeds.categories[results.response.entity][0];
+            let articles = await newsReader(feedCategory);
+            let msg = new builder.Message(session);
+            var articleCards = [];
 
-module.exports = {hello, weather};
+            articles.forEach(article => {
+                let card;
+
+                card = new builder.HeroCard(session)
+                    .title(article.title)
+                    .images([builder.CardImage.create(session, article.image)])
+                    .text(article.summary);
+
+                articleCards.push(card);
+            });
+
+            msg.attachmentLayout(builder.AttachmentLayout.carousel);
+            msg.attachments(articleCards);
+            session.send(msg).endDialog();
+        } catch(e) {
+            console.log(e);
+            session.replaceDialog('getRssFeeds', {reprompt: true});
+        }
+    }
+];
+
+
+module.exports = {hello, weather, getRssFeeds};

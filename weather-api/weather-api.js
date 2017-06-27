@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 var getWeather = async (location) => {
-    // try {
         const encodedAddress = encodeURIComponent(location);
         const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}`;
         const geometryLocation = await axios.get(geocodeUrl);
@@ -17,14 +16,6 @@ var getWeather = async (location) => {
         var temperature = weather.data.currently.temperature;
         var apparentTemp = weather.data.currently.apparentTemperature;
         return `It's currently ${temperature}°C. It feels like ${apparentTemp}°C.`;
-
-    // } catch(e) {
-    //     if (e.code === 'ENOTFOUND') {
-    //         return 'Unable to connect to API.';
-    //     } else {
-    //         return e.message;
-    //     }
-    // }
 
 };
 

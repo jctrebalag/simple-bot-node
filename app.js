@@ -1,7 +1,7 @@
 const restify = require('restify');
 const builder = require('botbuilder');
 
-const {hello, weather} = require('./dialogs/dialogs');
+const {hello, weather, getRssFeeds} = require('./dialogs/dialogs');
 
 // Setup Restify Server
 const app = restify.createServer();
@@ -27,3 +27,7 @@ bot.dialog('weather', weather)
         matches: /^weather$/i
 });
 
+bot.dialog('news', getRssFeeds)
+    .triggerAction({
+        matches: /^news$/i
+    });
