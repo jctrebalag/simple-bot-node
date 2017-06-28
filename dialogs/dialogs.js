@@ -63,7 +63,10 @@ var getRssFeeds = [
                 card = new builder.HeroCard(session)
                     .title(article.title)
                     .images([builder.CardImage.create(session, article.image)])
-                    .text(article.summary);
+                    .text(article.summary)
+                    .buttons([
+                        builder.CardAction.openUrl(session, article.link, "Read")
+                    ]);
 
                 articleCards.push(card);
             });

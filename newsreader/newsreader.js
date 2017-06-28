@@ -14,9 +14,9 @@ var newsReader = async (url) => {
             let article = {
                 title: XmlEntities.decode(item.title),
                 summary: XmlEntities.decode(striptags(item.summary)),
-                image: getImgFeedparser(item.description)
+                image: getImgFeedparser(item.description),
+                link: item.link
             };
-            console.log(article.image);
             articleArr.push(article);
         });
         return articleArr;
@@ -25,6 +25,5 @@ var newsReader = async (url) => {
     }
 };
 
-// newsReader(feeds.categories.news[0]);
 
 module.exports = {newsReader};
