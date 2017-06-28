@@ -60,7 +60,7 @@ var getRssFeeds = [
             articles.forEach(article => {
                 let card;
 
-                card = new builder.ThumbnailCard(session)
+                card = new builder.HeroCard(session)
                     .title(article.title)
                     .images([builder.CardImage.create(session, article.image)])
                     .text(article.summary)
