@@ -76,7 +76,7 @@ var getRssFeeds = [
             session.send(msg).endDialog();
         } catch(e) {
             console.log(e);
-            session.replaceDialog('getRssFeeds', {reprompt: true});
+            session.replaceDialog('news', {reprompt: true});
         }
     }
 ];
