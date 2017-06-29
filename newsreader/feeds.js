@@ -10,7 +10,7 @@ var feeds = {
             "https://fr.finance.yahoo.com/rss/high-tech/"
         ],
         sport: [
-            "https://fr.sports.yahoo.com/rss/"
+            "https://fr.sports.yahoo.com/rss"
         ]
     }
 };

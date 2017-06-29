@@ -42,10 +42,10 @@ var weather = [
     }
 ];
 
-var getRssFeeds = [
+var news = [
     (session, args) => {
         if (args && args.reprompt) {
-            session.send(session, 'Unable to retrieve data.');
+            session.send('Unable to retrieve data.');
         }
         let options = {listStyle: builder.ListStyle.button};
         builder.Prompts.choice(session, "Topics:", feeds.categories, options);
@@ -57,19 +57,19 @@ var getRssFeeds = [
             let msg = new builder.Message(session);
             var articleCards = [];
 
-            articles.forEach(article => {
+            for (var i = 0; i < 20; i++) {
                 let card;
 
                 card = new builder.HeroCard(session)
-                    .title(article.title)
-                    .images([builder.CardImage.create(session, article.image)])
-                    .text(article.summary)
+                    .title(articles[i].title)
+                    .images([builder.CardImage.create(session, articles[i].image)])
+                    .text(articles[i].summary)
                     .buttons([
-                        builder.CardAction.openUrl(session, article.link, "Read")
+                        builder.CardAction.openUrl(session, articles[i].link, "Read")
                     ]);
 
                 articleCards.push(card);
-            });
+            }
 
             msg.attachmentLayout(builder.AttachmentLayout.carousel);
             msg.attachments(articleCards);
@@ -82,4 +82,4 @@ var getRssFeeds = [
 ];
 
 
-module.exports = {hello, weather, getRssFeeds};
+module.exports = {hello, weather, news};

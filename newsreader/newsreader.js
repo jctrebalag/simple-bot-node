@@ -6,10 +6,9 @@ const striptags = require('striptags');
 const {getImgFeedparser} = require('./../helpers/getImgFeedparser');
 
 var newsReader = async (url) => {
-    try {
         var feedsInfos = await feedparser(url);
         var articleArr = [];
-        // console.log(feedsInfos);
+        console.log(feedsInfos[0]);
         feedsInfos.forEach(item => {
             let article = {
                 title: XmlEntities.decode(item.title),
@@ -20,9 +19,6 @@ var newsReader = async (url) => {
             articleArr.push(article);
         });
         return articleArr;
-    } catch(e) {
-        console.log(e);
-    }
 };
 
 

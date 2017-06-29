@@ -1,9 +1,14 @@
 var getImgFeedparser = (text) => {
     let regex = /<img src="(.*?)"/;
 
-    let found = text.match(regex)[1];
+    let found = text.match(regex);
 
-    return found;
+    if (found) {
+        return found[1];
+    } else {
+        return null;
+    }
+
 };
 
 module.exports = {getImgFeedparser};
