@@ -1,4 +1,5 @@
 //test merge
+//test merge 2
 const restify = require('restify');
 const builder = require('botbuilder');
 
