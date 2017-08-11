@@ -1,7 +1,7 @@
 const restify = require('restify');
 const builder = require('botbuilder');
 
-const {hello, weather, news} = require('./dialogs/dialogs');
+const { hello, weather, news } = require('./dialogs/dialogs');
 
 // Setup Restify Server
 const app = restify.createServer();
